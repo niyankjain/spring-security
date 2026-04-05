@@ -1,3 +1,30 @@
+server:
+  port: 9091
+
 spring:
   application:
     name: spring-security
+  datasource:
+    url: jdbc:mysql://localhost:3306/spring_security
+    username: {USERNAME}
+    password: {PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+logging:
+  level:
+    root: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+
