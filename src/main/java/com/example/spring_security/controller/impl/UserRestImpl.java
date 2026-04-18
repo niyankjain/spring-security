@@ -13,7 +13,7 @@ import com.example.spring_security.UserRecord;
 import com.example.spring_security.service.ICustomUserService;
 
 @RestController
-@RequestMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "user", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserRestImpl{
 
   @Autowired
@@ -25,7 +25,7 @@ public class UserRestImpl{
     return customUserService.saveUser(userRecord);
   }
 
-  @GetMapping(path = "/v1/hello", produces = MediaType.APPLICATION_JSON_VALUE)
+  @GetMapping(path = "/v1/hello")
   public ResponseEntity<String> hello() {
     return ResponseEntity.ok("Hello World!");
   }

@@ -2,6 +2,7 @@ package com.example.spring_security.config;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,22 +14,27 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.example.spring_security.filter.JWTAuthFilter;
 import com.example.spring_security.service.impl.UserDetailServiceImpl;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
+  @Autowired
+  private JWTAuthFilter jwtAuthFilter;
+
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     HttpSecurity httpSecurity = http
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(authorize -> authorize
-            .requestMatchers("/user/v1/signup","/actuator/**").permitAll()
+            .requestMatchers("/user/v1/signup","/actuator/**","/authenticate").permitAll()
             .anyRequest().authenticated()
         )
-        .httpBasic(withDefaults());
+        .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
     return httpSecurity.build();
   }
 
